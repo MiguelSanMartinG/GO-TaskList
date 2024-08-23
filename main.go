@@ -19,6 +19,9 @@ func main() {
 	initJSON(list)
 	list.ReadJSON()
 	for {
+
+		fmt.Println("Introdusca su consulta: ")
+		// Lectura de inputs
 		c, err := cli.Read()
 		if err != nil {
 			panic(err)
@@ -28,10 +31,9 @@ func main() {
 		instructions := strings.Split(c, " ")
 		switch instructions[0] {
 		case "info":
-			cli.Commands()
+			commands()
 		case "task-cli": //Eliminamos el comando del programa ->
 			cli.TaskCli(instructions[1:], list)
-
 		case "exit":
 			fmt.Println("Adios")
 			os.Exit(0)
@@ -43,24 +45,26 @@ func main() {
 
 }
 
+// func initJSON
+// inicializa la carpeta y el directorio en el que se trabajara.
 func initJSON(list *task.Tasks) {
 	var directorio = "./Data"
 	var file = "/task.json"
 
 	_, err := os.Stat(directorio)
 	if os.IsNotExist(err) {
-		fmt.Println("El directorio no existe.")
+		fmt.Println("No se encontró directorio, se creara")
 		err := os.Mkdir(directorio, 0755)
 		if err != nil {
 			fmt.Println("Error al crear el directorio:", err)
 			return
 		} else {
-			fmt.Println("Directorio creado")
+			fmt.Println("Se ha creado el directorio: %s \n", directorio)
 		}
 	}
-	_, err = os.Stat(file)
+
+	_, err = os.Stat(directorio + file)
 	if os.IsNotExist(err) {
-		fmt.Println("El Archivo no existe.")
 		file, err := os.Create(directorio + file)
 		if err != nil {
 			fmt.Println("Error al crear el archivo:", err)
@@ -68,9 +72,20 @@ func initJSON(list *task.Tasks) {
 		} else {
 			defer file.Close()
 			list.WriteInJSON()
-			fmt.Println("Directorio creado")
-
+			fmt.Println("No se encontró task, se creara un JSON")
 		}
-		return
 	}
+}
+
+// func commands
+// Da una lista de los comandos disponibles en el programa.
+func commands() {
+	fmt.Println("Lista de comandos:")
+	lista := []string{"task-cli", "exit", "info"}
+
+	for _, v := range lista {
+		fmt.Printf("-%v", v)
+		fmt.Print(" ")
+	}
+	fmt.Print("\n")
 }

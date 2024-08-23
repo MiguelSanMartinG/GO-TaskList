@@ -24,32 +24,15 @@ func Read() (string, error) {
 
 }
 
-func Commands() {
-	fmt.Println("Lista de comandos:")
-	lista := []string{"task-cli", "exit", "info"}
-
-	for _, v := range lista {
-		fmt.Printf("-%v", v)
-		fmt.Print(" ")
-		//if i == len(lista)-1 {
-		//	break
-		//}
-	}
-	fmt.Print("\n")
-}
-
+// TaskCli funcion que evalua la instruccion y hace llos procedimientos.
 func TaskCli(command []string, t *task.Tasks) {
 
-	// Example: add "Programar Modulo emergente"
-	//			update 1 "NTX"
+	// instruction: add, update, delete, mark-in-progress, mark-done, list
+	// id: La id de la tarea es usado solo en update, delete, mak, y list
+	// args: suelen ser el nombre de la tarea.
 	instruction, args, id := getValues(command)
 
-	//if id <= 0 {
-	//	fmt.Println("ID Invalida")
-	//	return
-	//}
-	//Instruction deberia tener add, list etc y args un string
-
+	//Instruction debería tener add, list etc y args un string
 	switch instruction {
 	case "add":
 		if args == "" {
@@ -63,7 +46,6 @@ func TaskCli(command []string, t *task.Tasks) {
 			return
 		}
 		t.UpdateTask(id, args)
-
 	case "delete":
 		if id <= 0 {
 			fmt.Println("ID Invalida")
@@ -77,7 +59,7 @@ func TaskCli(command []string, t *task.Tasks) {
 	case "list":
 		t.ListTask(args)
 	default:
-		fmt.Println("Comando no reconocido precisione help para saber mas...")
+		fmt.Println("Comando no reconocido")
 		return
 	}
 
@@ -92,8 +74,8 @@ func getValues(consoleOutPut []string) (command, args string, id int) {
 		fmt.Println("Necesita dar una instruccion")
 		return
 	}
-	instruction := consoleOutPut[0]
 
+	instruction := consoleOutPut[0]
 	if len(consoleOutPut) > 1 {
 		if Utils.EsNumero(consoleOutPut[1]) {
 			id, _ = strconv.Atoi(consoleOutPut[1])
