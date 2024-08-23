@@ -1,6 +1,6 @@
 # Task Tracker
 
-This proyect was maded as roadmap.sh [Proyect](<https://roadmap.sh/projects/task-tracker>)
+This proyect was made as roadmap.sh [Proyect](<https://roadmap.sh/projects/task-tracker>) challage.
 ## Info
 
 This cli-app will manage your task and save it in a JSON file located in ./Data/task.json
@@ -12,7 +12,7 @@ This cli-app will manage your task and save it in a JSON file located in ./Data/
 go build -o dist/task-cli.exe main.go
 ~~~
 
-I chosse dist, because i like the way Angular manage his builds.
+I chose dist, because I like the way Angular manage his builds.
 
 ## Commands
 ~~~
