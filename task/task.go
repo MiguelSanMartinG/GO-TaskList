@@ -24,8 +24,13 @@ type Tasks struct {
 AddTask Añade tareas ala lista.
 Recibe: Nombre de la tarea.
 */
-func (t *Tasks) AddTask(v string) {
-	id := len(t.Stack) + 1
+func (t *Tasks) AddTask(v string, id int) { // state, id int
+
+	//Si la ID es igual
+	if id < 1 {
+		id = len(t.Stack) + 1
+
+	}
 	t.Stack = append(t.Stack, Task{
 		ID:          id,
 		Description: v,
@@ -53,5 +58,9 @@ func (t *Tasks) writeInJSON() {
 		log.Fatalf("Error al escribir el archivo: %v", err)
 	}
 	fmt.Println("Archivo JSON escrito con éxito")
+
+}
+
+func (t *Tasks) UpdateTask() {
 
 }

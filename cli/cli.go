@@ -1,19 +1,18 @@
 package cli
 
 import (
+	"TaskTracker/Utils"
 	"TaskTracker/task"
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
 var reader *bufio.Reader = bufio.NewReader(os.Stdin)
 
-/*
-*
-GetInput Lee la consola y regresa un string y un error
-*/
+// Read  Lee de consola /*
 func Read() (string, error) {
 	str, err := reader.ReadString('\n')
 	if err != nil {
@@ -40,35 +39,27 @@ func Commands() {
 }
 
 func TaskCli(command []string, t *task.Tasks) {
-	// command va a taer el comando en pedazos
-	// Casos va a llegar TaskCli add "Argumentos"
-	// O task-cli list sin argumtos
 
-	//fmt.Println("47Actualmente", t, "Entrando", command)
-	//Verificamos que lleve algo
-	if len(command) < 2 {
-		fmt.Println("Necesita dar una instruccion")
+	// Example: add "Programar Modulo emergente"
+	//			update 1 "NTX"
+	instruction, args, id := getValues(command)
+
+	if id <= 0 {
+		fmt.Println("ID Invalida")
 		return
 	}
-
-	instruction := command[1]
-	// Si llegamos aqui el comando polomenos tiene una instruccion  ejem [add]
-
-	// Lee la segunda linea
-	// Lee los argumentos y los une
-	args := ""
-	if len(command) > 2 {
-		body := command[2:]
-		args = strings.Join(body, " ")
-		fmt.Println(args)
-		//fmt.Println("Linea 49", args)
-	}
-
-	//fmt.Println("L 66", t)
+	//Instruction deberia tener add, list etc y args un string
 
 	switch instruction {
 	case "add":
-		t.AddTask(args)
+		if args == "" {
+			fmt.Println("Debe añadir una descripcion ala tarea")
+			return
+		}
+		t.AddTask(args, 0)
+	case "update":
+		//t.UpdateTask(id, args)
+
 	//case "delete":
 	//case "mark-in-progress":
 	//case "mark-done":
@@ -76,8 +67,32 @@ func TaskCli(command []string, t *task.Tasks) {
 		t.ListTask()
 	//case "info":
 	default:
-		fmt.Println("add, delete, list")
+		fmt.Println("Comando no reconocido precisione help para saber mas...")
 		return
 	}
 
+}
+
+func getValues(consoleOutPut []string) (command, args string, id int) {
+
+	// Ejem. [add "hola mundo"]
+
+	//Verificamos que lleve algo
+	if len(consoleOutPut) == 0 {
+		fmt.Println("Necesita dar una instruccion")
+		return
+	}
+	instruction := consoleOutPut[0]
+
+	if len(consoleOutPut) > 1 {
+		if Utils.EsNumero(consoleOutPut[1]) {
+			id, _ = strconv.Atoi(consoleOutPut[1])
+			args = strings.Join(consoleOutPut[2:], " ")
+		} else {
+			args = strings.Join(consoleOutPut[1:], " ")
+		}
+		fmt.Println(args)
+		return instruction, args, id
+	}
+	return instruction, "", -1
 }

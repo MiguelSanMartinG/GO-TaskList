@@ -22,12 +22,13 @@ func main() {
 			panic(err)
 		}
 
+		// In: String output Out: String slice
 		instructions := strings.Split(c, " ")
 		switch instructions[0] {
 		case "info":
 			cli.Commands()
-		case "task-cli":
-			cli.TaskCli(instructions, list)
+		case "task-cli": //Eliminamos el comando del programa ->
+			cli.TaskCli(instructions[1:], list)
 
 		case "exit":
 			fmt.Println("Adios")
@@ -43,3 +44,7 @@ func main() {
 func print(parameters any) {
 	fmt.Println(parameters)
 }
+
+//func readJson() {
+//	data, err := ioutil.ReadFile("tasks.json")
+//}
