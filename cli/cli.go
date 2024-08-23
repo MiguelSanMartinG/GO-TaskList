@@ -44,10 +44,10 @@ func TaskCli(command []string, t *task.Tasks) {
 	//			update 1 "NTX"
 	instruction, args, id := getValues(command)
 
-	if id <= 0 {
-		fmt.Println("ID Invalida")
-		return
-	}
+	//if id <= 0 {
+	//	fmt.Println("ID Invalida")
+	//	return
+	//}
 	//Instruction deberia tener add, list etc y args un string
 
 	switch instruction {
@@ -56,16 +56,26 @@ func TaskCli(command []string, t *task.Tasks) {
 			fmt.Println("Debe añadir una descripcion ala tarea")
 			return
 		}
-		t.AddTask(args, 0)
+		t.AddTask(args, -1)
 	case "update":
-		//t.UpdateTask(id, args)
+		if id <= 0 {
+			fmt.Println("ID Invalida")
+			return
+		}
+		t.UpdateTask(id, args)
 
-	//case "delete":
-	//case "mark-in-progress":
-	//case "mark-done":
+	case "delete":
+		if id <= 0 {
+			fmt.Println("ID Invalida")
+			return
+		}
+		t.DeleteTask(id)
+	case "mark-in-progress":
+		t.UpdateTaskState(id, "in-progress")
+	case "mark-done":
+		t.UpdateTaskState(id, "done")
 	case "list":
-		t.ListTask()
-	//case "info":
+		t.ListTask(args)
 	default:
 		fmt.Println("Comando no reconocido precisione help para saber mas...")
 		return

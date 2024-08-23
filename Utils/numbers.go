@@ -2,6 +2,10 @@ package Utils
 
 import "strconv"
 
+/*
+*
+EsNumero Funcion que regresa True si es un numero o False si no
+*/
 func EsNumero(cadena string) bool {
 	if _, err := strconv.Atoi(cadena); err == nil {
 		return true

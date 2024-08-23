@@ -16,6 +16,8 @@ func main() {
 	list := &task.Tasks{
 		Stack: make([]task.Task, 0),
 	}
+	initJSON(list)
+	list.ReadJSON()
 	for {
 		c, err := cli.Read()
 		if err != nil {
@@ -41,10 +43,34 @@ func main() {
 
 }
 
-func print(parameters any) {
-	fmt.Println(parameters)
-}
+func initJSON(list *task.Tasks) {
+	var directorio = "./Data"
+	var file = "/task.json"
 
-//func readJson() {
-//	data, err := ioutil.ReadFile("tasks.json")
-//}
+	_, err := os.Stat(directorio)
+	if os.IsNotExist(err) {
+		fmt.Println("El directorio no existe.")
+		err := os.Mkdir(directorio, 0755)
+		if err != nil {
+			fmt.Println("Error al crear el directorio:", err)
+			return
+		} else {
+			fmt.Println("Directorio creado")
+		}
+	}
+	_, err = os.Stat(file)
+	if os.IsNotExist(err) {
+		fmt.Println("El Archivo no existe.")
+		file, err := os.Create(directorio + file)
+		if err != nil {
+			fmt.Println("Error al crear el archivo:", err)
+			return
+		} else {
+			defer file.Close()
+			list.WriteInJSON()
+			fmt.Println("Directorio creado")
+
+		}
+		return
+	}
+}
